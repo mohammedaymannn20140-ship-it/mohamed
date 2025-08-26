@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-lang-key="pageTitle">Portfolio</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts - Inter for English, Cairo for Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">3
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Cairo:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        xintegrity="sha512-5w7n3y3jKQ9+q9bWwzTgqQKc2Qe5bAq+6yqHc7mN9C8qH7X0o1G0mVnQ+8sM4Cblm0m1c3wqg0XnQfJWQqG2Vg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* Define CSS Variables for Theming */
+        :root {
+            /* Dark Mode Colors */
+            --bg-color: #0b0f14;
+            --text-color: #dbe2f2;
+            --muted-text-color: #98a2b3;
+            --card-bg-color: #0f1621;
+            --border-color: #1f2937;
+            --brand-color: #7c3aed;
+            --brand-accent: #06b6d4;
+        }
+
+        .light-mode {
+            /* Light Mode Colors */
+            --bg-color: #f7f9fc;
+            --text-color: #0b1220;
+            --muted-text-color: #475467;
+            --card-bg-color: #ffffff;
+            --border-color: #e5e7eb;
+            --brand-color: #06b6d4;
+            --brand-accent: #0ea5e9;
+        }
+
+        /* General Styles */
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            scroll-behavior: smooth;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Hero Section Dynamic Background Gradient */
+        /* تأثير خلفية متحركة لدعم الحيوية في قسم البداية */
+        @keyframes subtlePulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(1200px 800px at 80% -10%, rgba(124, 58, 237, .25), transparent 60%),
+                radial-gradient(1000px 700px at -10% 10%, rgba(6, 182, 212, .2), transparent 60%);
+            animation: background-move 15s infinite alternate ease-in-out;
+            z-index: 1;
+            /* يجب أن تكون الخلفية أسفل المحتوى */
+        }
+
+        /* تعديل تأثير الخلفية للوضع الفاتح */
+        .light-mode .hero::before {
+            background: radial-gradient(1200px 800px at 80% -10%, rgba(6, 182, 212, .1), transparent 60%),
+                radial-gradient(1000px 700px at -10% 10%, rgba(124, 58, 237, .1), transparent 60%);
+        }
+
+        /* حركة انتقال للخلفية */
+        @keyframes background-move {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Floating Image Animation */
+        /* حركة طفيفة للصورة الشخصية */
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .floating-image {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Typing Cursor */
+        /* مؤشر الكتابة المتحرك */
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: var(--text-color);
+            animation: blink 0.7s infinite;
+            margin-inline-start: 4px;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Scroll Reveal Animation */
+        /* تأثير ظهور العناصر عند التمرير */
+        .sr {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s cubic-bezier(0.5, 0, 0, 1), transform 0.7s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .sr.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Card 3D Hover Effect */
+        /* تأثير ميلان ثلاثي الأبعاد لبطاقات المحتوى */
+        .card {
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05) rotateX(2deg) rotateY(-2deg);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Button Pulse Animation */
+        /* تأثير نبض للزر الأساسي */
+        @keyframes pulse-btn {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.4);
+            }
+
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(124, 58, 237, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
+            }
+        }
+
+        .pulse-btn {
+            animation: pulse-btn 2s infinite;
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden light-mode">
+
+    <!-- Header & Navigation -->
+    <header class="fixed top-0 left-0 w-full backdrop-blur-md z-40 shadow-lg transition-colors duration-500">
+        <nav class="container mx-auto flex justify-between items-center p-4">
+            <h1 class="text-2xl font-black tracking-wider">
+                <a href="#" class="text-[var(--text-color)] hover:text-[var(--brand-accent)] transition-colors"
+                    data-lang-key="yourName">Portfolio</a>
+            </h1>
+            <div class="flex items-center space-x-4 md:space-x-8 rtl:space-x-reverse">
+                <a href="#about"
+                    class="text-[var(--text-color)] hover:text-[var(--brand-accent)] transition-colors font-medium text-lg hidden md:block"
+                    data-lang-key="navAbout">About</a>
+                <a href="#skills"
+                    class="text-[var(--text-color)] hover:text-[var(--brand-accent)] transition-colors font-medium text-lg hidden md:block"
+                    data-lang-key="navSkills">Skills</a>
+                <a href="#projects"
+                    class="text-[var(--text-color)] hover:text-[var(--brand-accent)] transition-colors font-medium text-lg hidden md:block"
+                    data-lang-key="navProjects">Projects</a>
+                <a href="#contact"
+                    class="text-[var(--text-color)] hover:text-[var(--brand-accent)] transition-colors font-medium text-lg hidden md:block"
+                    data-lang-key="navContact">Contact</a>
+
+                <!-- Language and Theme Toggles -->
+                <button id="lang-toggle"
+                    class="bg-[var(--card-bg-color)] border border-[var(--border-color)] text-[var(--text-color)] px-3 py-1.5 rounded-lg transition-colors duration-300">
+                    <span data-lang-key="langToggle">AR</span>
+                </button>
+                <button id="theme-toggle"
+                    class="bg-[var(--card-bg-color)] border border-[var(--border-color)] text-[var(--text-color)] px-3 py-1.5 rounded-lg transition-colors duration-300">
+                    <i class="fas fa-adjust"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 pt-24 relative z-10">
+
+        <!-- Hero Section -->
+        <section id="hero"
+            class="hero min-h-screen flex flex-col-reverse md:flex-row items-center justify-center text-center md:text-start pt-16 pb-12">
+            <div class="md:w-1/2 mb-10 md:mb-0 sr">
+                <h2 class="text-4xl md:text-6xl font-black mb-4">
+                    <span data-lang-key="heroGreeting">Hello, I'm</span> <span class="text-[var(--brand-accent)]"
+                        data-lang-key="yourName">Mohamed</span>
+                </h2>
+                <h3 class="text-2xl md:text-3xl font-bold mb-6">
+                    <span data-lang-key="heroIm">I am a </span><span id="typing-text"
+                        class="text-[var(--brand-color)]"></span><span class="typing-cursor"></span>
+                </h3>
+                <p class="max-w-md mx-auto md:mx-0 text-[var(--muted-text-color)]" data-lang-key="heroDescription">
+                    A passionate front-end developer focused on building beautiful and interactive web applications. I
+                    enjoy polishing UX details, micro-interactions, and performance.
+                </p>
+                <div class="flex flex-wrap gap-4 mt-8 justify-center md:justify-start">
+                    <!-- إضافة تأثير النبض للزر الأساسي -->
+                    <a href="#projects"
+                        class="bg-[var(--brand-color)] text-white py-3 px-6 rounded-xl shadow-lg hover:bg-[var(--brand-accent)] transition-colors pulse-btn"
+                        data-lang-key="viewProjectsBtn">
+                        <i class="fa-solid fa-rocket"></i> View Projects
+                    </a>
+                    <a href="#contact"
+                        class="bg-[var(--card-bg-color)] text-[var(--text-color)] py-3 px-6 rounded-xl border border-[var(--border-color)] hover:bg-[var(--border-color)] transition-colors"
+                        data-lang-key="contactMeBtn">
+                        <i class="fa-regular fa-envelope"></i> Contact Me
+                    </a>
+                </div>
+            </div>
+            <!-- تم استبدال الصورة بـ Placeholder ثابت ومتحرك -->
+            <div class="md:w-1/2 flex justify-center sr" style="transition-delay: 200ms;">
+                <img src="/Gemini_Generated_Image_t9i3jxt9i3jxt9i3.png" alt="صورة محمد"
+                    class="w-64 h-64 md:w-80 md:h-80 rounded-full object-cover border-4 border-[var(--brand-color)] shadow-2xl shadow-[var(--brand-color)]/30 floating-image">
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 sr">
+            <h2 class="text-4xl font-black text-center mb-12" data-lang-key="aboutTitle">About Me</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-[var(--card-bg-color)] p-8 rounded-2xl border border-[var(--border-color)] card">
+                    <p data-lang-key="aboutDesc1">I'm Mohamed, a self-taught front-end developer focused on building
+                        elegant, accessible, and high-performance user interfaces. I work with **HTML**, **CSS**, and
+                        **JavaScript**, manage code on **GitHub**, and love shipping pixel-perfect, responsive designs.
+                    </p>
+                    <p class="text-[var(--muted-text-color)] mt-4" data-lang-key="aboutDesc2">Available for
+                        freelance/part-time work. Based in Egypt.</p>
+                </div>
+                <div
+                    class="bg-[var(--card-bg-color)] p-8 rounded-2xl border border-[var(--border-color)] card flex flex-col justify-between">
+                    <div>
+                        <strong data-lang-key="fastFactsTitle">Fast Facts</strong>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <span
+                                class="bg-[var(--border-color)] text-[var(--text-color)] py-1.5 px-3 rounded-full text-sm">HTML5</span>
+                            <span
+                                class="bg-[var(--border-color)] text-[var(--text-color)] py-1.5 px-3 rounded-full text-sm">CSS3</span>
+                            <span
+                                class="bg-[var(--border-color)] text-[var(--text-color)] py-1.5 px-3 rounded-full text-sm">JavaScript</span>
+                            <span
+                                class="bg-[var(--border-color)] text-[var(--text-color)] py-1.5 px-3 rounded-full text-sm">Git
+                                & GitHub</span>
+                            <span
+                                class="bg-[var(--border-color)] text-[var(--text-color)] py-1.5 px-3 rounded-full text-sm"
+                                data-lang-key="responsive">Responsive</span>
+                            <span
+                                class="bg-[var(--border-color)] text-[var(--text-color)] py-1.5 px-3 rounded-full text-sm"
+                                data-lang-key="fastTyping">Fast Typing</span>
+                        </div>
+                    </div>
+                    <a href="#"
+                        class="bg-[var(--card-bg-color)] text-[var(--text-color)] py-3 px-6 rounded-xl border border-[var(--border-color)] hover:bg-[var(--border-color)] transition-colors mt-6 text-center"
+                        data-lang-key="downloadCVBtn" download>
+                        <i class="fa-solid fa-file-arrow-down"></i> Download CV
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 sr">
+            <h2 class="text-4xl font-black text-center mb-12" data-lang-key="skillsTitle">My Skills</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                <!-- Core Skills -->
+                <div
+                    class="bg-[var(--card-bg-color)] p-6 rounded-2xl text-center hover:scale-105 hover:shadow-lg transition-all duration-300 card group">
+                    <i class="fa-brands fa-html5 text-4xl mb-4 text-orange-500 group-hover:animate-bounce"></i>
+                    <!-- إضافة تأثير ارتداد عند التمرير -->
+                    <h3 class="font-bold text-xl">HTML</h3>
+                </div>
+                <div
+                    class="bg-[var(--card-bg-color)] p-6 rounded-2xl text-center hover:scale-105 hover:shadow-lg transition-all duration-300 card group">
+                    <i class="fa-brands fa-css3-alt text-4xl mb-4 text-blue-500 group-hover:animate-bounce"></i>
+                    <h3 class="font-bold text-xl">CSS</h3>
+                </div>
+                <div
+                    class="bg-[var(--card-bg-color)] p-6 rounded-2xl text-center hover:scale-105 hover:shadow-lg transition-all duration-300 card group">
+                    <i class="fa-brands fa-square-js text-4xl mb-4 text-yellow-400 group-hover:animate-bounce"></i>
+                    <h3 class="font-bold text-xl">JavaScript</h3>
+                </div>
+                <div
+                    class="bg-[var(--card-bg-color)] p-6 rounded-2xl text-center hover:scale-105 hover:shadow-lg transition-all duration-300 card group">
+                    <i
+                        class="fa-brands fa-github text-4xl mb-4 text-[var(--text-color)] group-hover:animate-bounce"></i>
+                    <h3 class="font-bold text-xl">GitHub</h3>
+                </div>
+                <div
+                    class="bg-[var(--card-bg-color)] p-6 rounded-2xl text-center hover:scale-105 hover:shadow-lg transition-all duration-300 card group">
+                    <i
+                        class="fa-solid fa-keyboard text-4xl mb-4 text-[var(--text-color)] group-hover:animate-bounce"></i>
+                    <h3 class="font-bold text-xl" data-lang-key="fastTypingSkill">Fast Typing</h3>
+                </div>
+                <!-- Added Skills -->
+                <div
+                    class="bg-[var(--card-bg-color)] p-6 rounded-2xl text-center hover:scale-105 hover:shadow-lg transition-all duration-300 card group">
+                    <i class="fa-brands fa-tailwindcss text-4xl mb-4 text-sky-400 group-hover:animate-bounce"></i>
+                    <h3 class="font-bold text-xl">Tailwind CSS</h3>
+                </div>
+                <div
+                    class="bg-[var(--card-bg-color)] p-6 rounded-2xl text-center hover:scale-105 hover:shadow-lg transition-all duration-300 card group">
+                    <i class="fa-solid fa-icons text-4xl mb-4 text-purple-400 group-hover:animate-bounce"></i>
+                    <h3 class="font-bold text-xl">Font Awesome</h3>
+                </div>
+                <div
+                    class="bg-[var(--card-bg-color)] p-6 rounded-2xl text-center hover:scale-105 hover:shadow-lg transition-all duration-300 card group">
+                    <i class="fa-solid fa-crosshairs text-4xl mb-4 text-green-400 group-hover:animate-bounce"></i>
+                    <h3 class="font-bold text-xl" data-lang-key="observerAPI">Observer API</h3>
+                </div>
+                <div
+                    class="bg-[var(--card-bg-color)] p-6 rounded-2xl text-center hover:scale-105 hover:shadow-lg transition-all duration-300 card group">
+                    <i class="fa-solid fa-database text-4xl mb-4 text-blue-400 group-hover:animate-bounce"></i>
+                    <h3 class="font-bold text-xl">LocalStorage</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 sr">
+            <h2 class="text-4xl font-black text-center mb-12" data-lang-key="projectsTitle">My Projects</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div
+                    class="bg-[var(--card-bg-color)] rounded-2xl overflow-hidden group hover:scale-105 transition-all duration-300 card">
+                    <img src="https://placehold.co/600x400/1e293b/d1d5db?text=Project+One" alt="Project One Image"
+                        class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2" data-lang-key="project1Title">Project One</h3>
+                        <p class="mb-4 text-[var(--muted-text-color)]" data-lang-key="project1Desc">A brief description
+                            of the project. Talk about the technologies used and the project's goal.</p>
+                        <a href="#"
+                            class="inline-block bg-[var(--brand-color)] text-white py-2 px-4 rounded-xl hover:bg-[var(--brand-accent)] transition-colors"
+                            data-lang-key="viewProjectBtn">View Project</a>
+                    </div>
+                </div>
+                <div
+                    class="bg-[var(--card-bg-color)] rounded-2xl overflow-hidden group hover:scale-105 transition-all duration-300 card">
+                    <img src="https://placehold.co/600x400/1e293b/d1d5db?text=Project+Two" alt="Project Two Image"
+                        class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2" data-lang-key="project2Title">Project Two</h3>
+                        <p class="mb-4 text-[var(--muted-text-color)]" data-lang-key="project2Desc">Second project with
+                            a different layout or animation challenge.</p>
+                        <a href="#"
+                            class="inline-block bg-[var(--brand-color)] text-white py-2 px-4 rounded-xl hover:bg-[var(--brand-accent)] transition-colors"
+                            data-lang-key="viewProjectBtn">View Project</a>
+                    </div>
+                </div>
+                <div
+                    class="bg-[var(--card-bg-color)] rounded-2xl overflow-hidden group hover:scale-105 transition-all duration-300 card">
+                    <img src="https://placehold.co/600x400/1e293b/d1d5db?text=Project+Three" alt="Project Three Image"
+                        class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2" data-lang-key="project3Title">Project Three</h3>
+                        <p class="mb-4 text-[var(--muted-text-color)]" data-lang-key="project3Desc">UI component library
+                            or micro-interaction collection.</p>
+                        <a href="#"
+                            class="inline-block bg-[var(--brand-color)] text-white py-2 px-4 rounded-xl hover:bg-[var(--brand-accent)] transition-colors"
+                            data-lang-key="viewProjectBtn">View Project</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 sr">
+            <h2 class="text-4xl font-black text-center mb-12" data-lang-key="contactTitle">Contact Me</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-[var(--card-bg-color)] p-8 rounded-2xl border border-[var(--border-color)] card">
+                    <form onsubmit="handleFormSubmit(event)">
+                        <div class="mb-4">
+                            <label for="name" class="block text-[var(--muted-text-color)] mb-2"
+                                data-lang-key="nameLabel">Name</label>
+                            <input type="text" id="name"
+                                class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl py-3 px-4 text-[var(--text-color)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-color)]"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-[var(--muted-text-color)] mb-2"
+                                data-lang-key="emailLabel">Email</label>
+                            <input type="email" id="email"
+                                class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl py-3 px-4 text-[var(--text-color)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-color)]"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="block text-[var(--muted-text-color)] mb-2"
+                                data-lang-key="messageLabel">Message</label>
+                            <textarea id="message" rows="5"
+                                class="w-full bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl py-3 px-4 text-[var(--text-color)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-color)]"
+                                required></textarea>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-[var(--brand-color)] text-white py-3 rounded-xl font-bold hover:shadow-lg transition-shadow"
+                            data-lang-key="sendBtn">
+                            <i class="fa-regular fa-paper-plane"></i> Send
+                        </button>
+                    </form>
+                </div>
+                <div class="bg-[var(--card-bg-color)] p-8 rounded-2xl border border-[var(--border-color)] card">
+                    <h3 class="text-2xl font-bold mb-4" data-lang-key="findMeTitle">Find me online</h3>
+                    <p class="text-[var(--muted-text-color)] mb-6" data-lang-key="findMeDesc">Add your social links
+                        below.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub"
+                            class="flex justify-center items-center w-12 h-12 bg-[var(--border-color)] rounded-lg border border-[var(--border-color)] hover:bg-[var(--muted-text-color)]/20 transition-colors">
+                            <i class="fa-brands fa-github text-2xl text-[var(--text-color)]"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/yourusername" target="_blank" aria-label="LinkedIn"
+                            class="flex justify-center items-center w-12 h-12 bg-[var(--border-color)] rounded-lg border border-[var(--border-color)] hover:bg-[var(--muted-text-color)]/20 transition-colors">
+                            <i class="fa-brands fa-linkedin text-2xl text-blue-400"></i>
+                        </a>
+                        <a href="mailto:you@example.com" aria-label="Email"
+                            class="flex justify-center items-center w-12 h-12 bg-[var(--border-color)] rounded-lg border border-[var(--border-color)] hover:bg-[var(--muted-text-color)]/20 transition-colors">
+                            <i class="fa-regular fa-envelope text-2xl text-red-400"></i>
+                        </a>
+                        <a href="https://twitter.com/yourusername" target="_blank" aria-label="Twitter"
+                            class="flex justify-center items-center w-12 h-12 bg-[var(--border-color)] rounded-lg border border-[var(--border-color)] hover:bg-[var(--muted-text-color)]/20 transition-colors">
+                            <i class="fa-brands fa-x-twitter text-2xl text-[var(--text-color)]"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 py-10 text-center border-t border-[var(--border-color)]">
+        <p class="text-[var(--muted-text-color)]" data-lang-key="footerText">
+            &copy; 2025 Mohamed. All rights reserved.
+        </p>
+    </footer>
+
+    <!-- Back to top button -->
+    <button id="to-top-btn"
+        class="fixed bottom-4 right-4 bg-[var(--card-bg-color)] text-[var(--text-color)] p-3 rounded-full shadow-lg border border-[var(--border-color)] hover:bg-[var(--border-color)] transition-colors duration-300 hidden">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Language and translation data
+        const translations = {
+            'en': {
+                'pageTitle': 'Portfolio | Mohamed',
+                'yourName': 'Mohamed',
+                'langToggle': 'AR',
+                'navAbout': 'About',
+                'navSkills': 'Skills',
+                'navProjects': 'Projects',
+                'navContact': 'Contact',
+                'heroGreeting': 'Hello, I\'m',
+                'heroIm': 'I am a ',
+                'heroDescription': 'A passionate front-end developer focused on building beautiful and interactive web applications. I enjoy polishing UX details, micro-interactions, and performance.',
+                'viewProjectsBtn': 'View Projects',
+                'contactMeBtn': 'Contact Me',
+                'aboutTitle': 'About Me',
+                'aboutDesc1': 'I\'m Mohamed, a self-taught front-end developer focused on building elegant, accessible, and high-performance user interfaces. I work with **HTML**, **CSS**, and **JavaScript**, manage code on **GitHub**, and love shipping pixel-perfect, responsive designs.',
+                'aboutDesc2': 'Available for freelance/part-time work. Based in Egypt.',
+                'fastFactsTitle': 'Fast Facts',
+                'responsive': 'Responsive',
+                'fastTyping': 'Fast Typing',
+                'fastTypingSkill': 'Fast Typing',
+                'downloadCVBtn': 'Download CV',
+                'skillsTitle': 'My Skills',
+                'projectsTitle': 'My Projects',
+                'project1Title': 'Project One',
+                'project1Desc': 'A brief description of the project. Talk about the technologies used and the project\'s goal.',
+                'project2Title': 'Project Two',
+                'project2Desc': 'Second project with a different layout or animation challenge.',
+                'project3Title': 'Project Three',
+                'project3Desc': 'UI component library or micro-interaction collection.',
+                'viewProjectBtn': 'View Project',
+                'contactTitle': 'Contact Me',
+                'nameLabel': 'Name',
+                'emailLabel': 'Email',
+                'messageLabel': 'Message',
+                'sendBtn': 'Send',
+                'findMeTitle': 'Find me online',
+                'findMeDesc': 'Add your social links below.',
+                'footerText': '&copy; 2025 Mohamed. All rights reserved.',
+                'typingPhrases': ['Front-End Developer', 'Web Designer', 'UI/UX Enthusiast'],
+                'observerAPI': 'Observer API'
+            },
+            'ar': {
+                'pageTitle': 'بورتفوليو | محمد',
+                'yourName': 'محمد',
+                'langToggle': 'EN',
+                'navAbout': 'عني',
+                'navSkills': 'المهارات',
+                'navProjects': 'المشاريع',
+                'navContact': 'تواصل',
+                'heroGreeting': 'أهلاً، أنا',
+                'heroIm': 'أنا',
+                'heroDescription': 'مطور واجهات أمامية شغوف ببناء تطبيقات ويب جميلة وتفاعلية. أركز على تجربة المستخدم، والتفاصيل الدقيقة، والأداء.',
+                'viewProjectsBtn': 'عرض المشاريع',
+                'contactMeBtn': 'تواصل معي',
+                'aboutTitle': 'عني',
+                'aboutDesc1': 'أنا محمد، مطور واجهات أمامية، أركز على بناء واجهات مستخدم أنيقة، سهلة الاستخدام، وعالية الأداء. أعمل بـ HTML، CSS، و JavaScript، وأدير الكود على GitHub، وأحب تصميم الأفكار وتحويلها إلى تجارب رقمية ممتازة.',
+                'aboutDesc2': 'أنا متاح للعمل الحر/الجزئي. مقيم في مصر.',
+                'fastFactsTitle': 'حقائق سريعة',
+                'responsive': 'متجاوب',
+                'fastTyping': 'سرعة في الكتابة',
+                'fastTypingSkill': 'سرعة في الكتابة',
+                'downloadCVBtn': 'تحميل السيرة الذاتية',
+                'skillsTitle': 'مهاراتي',
+                'projectsTitle': 'مشاريعي',
+                'project1Title': 'المشروع الأول',
+                'project1Desc': 'وصف موجز للمشروع، التقنيات المستخدمة، وهدف المشروع.',
+                'project2Title': 'المشروع الثاني',
+                'project2Desc': 'مشروع آخر لتحدي تصميم أو رسوم متحركة مختلف.',
+                'project3Title': 'المشروع الثالث',
+                'project3Desc': 'مكتبة مكونات واجهة المستخدم أو مجموعة من التفاعلات الدقيقة.',
+                'viewProjectBtn': 'عرض المشروع',
+                'contactTitle': 'تواصل معي',
+                'nameLabel': 'الاسم',
+                'emailLabel': 'البريد الإلكتروني',
+                'messageLabel': 'الرسالة',
+                'sendBtn': 'إرسال',
+                'findMeTitle': 'تجدني على الإنترنت',
+                'findMeDesc': 'أضف روابط حساباتك الشخصية هنا.',
+                'footerText': '&copy; 2025 محمد. جميع الحقوق محفوظة.',
+                'typingPhrases': ['مطور واجهات أمامية', 'مصمم ويب', 'محب لتجربة المستخدم'],
+                'observerAPI': 'تأثير الظهور'
+            }
+        };
+
+        // تم تغيير الافتراضي للغة إلى الإنجليزية
+        let currentLang = localStorage.getItem('lang') || 'en';
+        const typingElement = document.getElementById('typing-text');
+        const langToggleBtn = document.getElementById('lang-toggle');
+
+        const updateLanguage = (lang) => {
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+            localStorage.setItem('lang', lang);
+            currentLang = lang;
+            // Restart typing animation after lang change
+            if (typingElement) startTypingAnimation(translations[currentLang].typingPhrases);
+        };
+
+        const toggleLanguage = () => {
+            const newLang = currentLang === 'ar' ? 'en' : 'ar';
+            updateLanguage(newLang);
+        };
+
+        langToggleBtn.addEventListener('click', toggleLanguage);
+
+        // Theme Toggle with localStorage
+        const body = document.body;
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const savedTheme = localStorage.getItem('theme');
+
+        // تم تغيير الافتراضي للمظهر إلى الفاتح
+        if (savedTheme === 'dark') {
+            body.classList.remove('light-mode');
+        } else {
+            body.classList.add('light-mode');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+        });
+
+        // Typing Animation
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let phrases = [];
+
+        function startTypingAnimation(newPhrases) {
+            phrases = newPhrases;
+            phraseIndex = 0;
+            charIndex = 0;
+            isDeleting = false;
+            type();
+        }
+
+        function type() {
+            const currentPhrase = phrases[phraseIndex];
+            if (isDeleting) {
+                typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typingSpeed = isDeleting ? 50 : 150;
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typingSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typingSpeed = 500;
+            }
+            setTimeout(type, typingSpeed);
+        }
+
+        // Start animation after language is set
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait for initial language update to get the phrases
+            setTimeout(() => {
+                updateLanguage(currentLang);
+            }, 50); // Small delay to ensure translations are loaded
+        });
+
+        // Scroll Reveal Animation
+        const revealables = document.querySelectorAll('.sr');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('show');
+                    io.unobserve(e.target);
+                }
+            });
+        }, {
+            threshold: 0.12
+        });
+        revealables.forEach(el => io.observe(el));
+
+        // Back to top button
+        const toTopBtn = document.getElementById('to-top-btn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                toTopBtn.classList.remove('hidden');
+            } else {
+                toTopBtn.classList.add('hidden');
+            }
+        });
+        toTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // Form submit handler
+        const handleFormSubmit = (event) => {
+            event.preventDefault();
+            const messageBox = document.createElement('div');
+            messageBox.innerHTML = `
+                <div class="fixed inset-0 bg-[var(--bg-color)] bg-opacity-70 flex items-center justify-center z-50">
+                    <div class="bg-[var(--card-bg-color)] p-8 rounded-2xl shadow-2xl text-center max-w-sm w-full border border-[var(--border-color)]">
+                        <h3 class="text-xl font-bold mb-4">Thank you!</h3>
+                        <p class="text-[var(--muted-text-color)] mb-6">Your message has been sent successfully. Mohamed will contact you soon.</p>
+                        <button class="bg-[var(--brand-color)] text-white py-2 px-4 rounded-xl hover:bg-[var(--brand-accent)] transition-colors" onclick="this.parentElement.parentElement.remove()">Okay</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(messageBox);
+        };
+    </script>
+</body>
+
+</html>
